@@ -1,0 +1,75 @@
+from flask import Flask,request,render_template
+import json
+app=Flask(__name__)
+
+# Routes
+@app.route("/")
+def welcome():
+    return render_template("index.html")
+
+@app.route('/aboutus')
+def aboutus():
+    return "we are ineuron student"
+
+ 
+@app.route('/demo1',methods=['POST'])
+def math_operation1():
+    if(request.method=='POST'):
+        operation = request.json['operation']
+        num1 = request.json['num1']
+        num2 = request.json['num2']
+        result=0 
+        if operation == "addition":
+            result = num1 + num2
+        elif operation == "multiply":
+            result = num1 * num2
+ 
+        elif operation == "division":
+            if num2 != 0:
+                result = num1/num2
+            else:
+                return 'Division with sero is not possiable'
+            
+        elif operation == "subtraction":
+            result = num1 - num2
+ 
+        elif operation == "madulo division":
+            result= num1 %num2
+        else:
+            return 'No opration is performed for you'
+        return (f" The operation is {operation} and the result is {result}")
+
+ 
+
+
+
+ 
+ 
+@app.route("/operation",methods=['POST'])
+def operation():
+    if(request.method=='POST'):
+        operation = request.form['operation']
+        num1 = int(request.form['num1'])
+        num2 = int(request.form['num2'])
+        result=0 
+        if operation == "addition":
+            result = num1 + num2
+        elif operation == "multiply":
+            result = num1 * num2
+ 
+        elif operation == "division":
+             
+            result = num1/num2
+              
+            
+        elif operation == "subtraction":
+            result = num1 - num2
+ 
+        elif operation == "madulo division":
+            result= num1 %num2
+        else:
+            return 'No opration is performed for you'
+        return render_template('result.html',result=result)
+
+if __name__=="__main__":
+    app.run(host="0.0.0.0",port=5000)
